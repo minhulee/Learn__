@@ -1,8 +1,6 @@
 
 # born2beroot
 
----
-
 
 ### 1.  설치 과정
 
@@ -12,7 +10,6 @@ Language : English
 Time : Korean
 Host, User id : (intra id) + 42
 password : 과제에서 요구된 비밀번호 정책을 통과할 수 있도록 설정 (이후 재설정 과정을 생략하기 위함)
-
 
 #### 1-1. Encrypted Disk
 
@@ -24,16 +21,17 @@ password : 과제에서 요구된 비밀번호 정책을 통과할 수 있도록
 
 이는 클러스터 내 아이맥의 환경적 문제로 인해 어쩔 수 없다...
 
-파티션 용량 설정
-root (2659MB)
-swap (624MB)
-home (1358MB)
-var, srv, tmp (817MB)
-var-log(남은 용량) -> CLI상에서 var--log로 표기되나 실제 파티션 명은 var-log
+	파티션 용량 설정
+ 	root (2659MB)
+	swap (624MB)
+	home (1358MB)
+	var, srv, tmp (817MB)
+	var-log(남은 용량) -> CLI상에서 var--log로 표기되나 실제 파티션 명은 var-log
 
-파티션 설정
-swap - Use as Swap area, 자동으로 마운트 포인트 설정
-나머지 - Ext4 journaling file System, 각 이름에 맞는 마운트 포인트 설정
+
+	파티션 설정
+	swap - Use as Swap area, 자동으로 마운트 포인트 설정
+	나머지 - Ext4 journaling file System, 각 이름에 맞는 마운트 포인트 설정
 
 이외 설치 과정에서 요구되는 사항들은 설정된 기본 설정으로 진행한다.
 
@@ -66,29 +64,25 @@ apt install ufw
 
 #### 2-1. UFW command (sudo 생략)
 
-	ufw status (verbose)
 
-- UFW의 현재 상태 확인 (상세한 정보 출력)
-
-
-	 `ufw allow [service name] or [port] or [port]/[method] or [ip] ...`
-
-- UFW에 허가하는 연결을 추가한다.
+	1. ufw status (verbose)
+ 	- UFW의 현재 상태 확인 (상세한 정보 출력)
 
 
-	 `ufw rule delete [numb] - 1부터 시작`
-
-- status 상의 순서 중 해당 numb 의 룰을 제거한다.
-
-
-	`ufw enable / ufw disable`
-
-- UFW를 사용한다. / 미사용한다.
+	 2. ufw allow [service name] or [port] or [port]/[method] or [ip] ...
+  	- UFW에 허가하는 연결을 추가한다.
 
 
-	 `systemctl status ufw` 
+	 3. ufw rule delete [numb] - 1부터 시작
+  	- status 상의 순서 중 해당 numb 의 룰을 제거한다.
 
-- 별개로, UFW 가 데비안 서비스 상에서 동작중인지 확인한다.
+
+	4. ufw enable / ufw disable
+ 	- UFW를 사용한다. / 미사용한다.
+
+
+	5. systemctl status ufw`
+  	- 별개로, UFW 가 데비안 서비스 상에서 동작중인지 확인한다.
 
 
 ---
@@ -122,7 +116,7 @@ sudo [option..] [command] ..
 해당 과제에서는 강력한 보안 정책을 위해 sudoers 파일에 다음 내용을 추가해야 한다.
 
 
-#### 3-1. add sudoers rules
+#### 3-1. add secure rules
 
 	visudo : readonly인 sudoers file을 편집하기 위한 command
 
