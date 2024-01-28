@@ -1,4 +1,6 @@
 
+# born2beroot
+
 ---
 
 
@@ -16,7 +18,7 @@ password : 과제에서 요구된 비밀번호 정책을 통과할 수 있도록
 
 과제는 OS 설치 과정에서 디스크의 암호화 및 파티션의 커스텀 설정을 요구한다.
 
-![[partition.png]]
+<img width="620" alt="partition" src="https://github.com/minhulee/Learn__/assets/110901252/3ab34f31-9d53-4470-9d06-41bf725943de">
 
 해당 스크린샷과 동일한 형태로 파티션을 분리하는데 용량의 경우, 일반적으로 Virtual Box의 기본 설정인 8GB를 사용하는 경우가 많으므로 실제 머신의 용량 / 요구된 용량을 기준으로 설정한다.
 
