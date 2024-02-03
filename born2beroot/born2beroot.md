@@ -35,7 +35,7 @@ password : 과제에서 요구된 비밀번호 정책을 통과할 수 있도록
 
 이외 설치 과정에서 요구되는 사항들은 설정된 기본 설정으로 진행한다.
 
-### 1-2. Debian
+#### 1-2. Debian
 
 과제는 선택한 OS에 대한 이해를 요구한다.
 
@@ -158,7 +158,7 @@ sudo [option..] [command] ..
 
 	2. sudo 사용 중 잘못된 패스워드로 인한 에러일 시 커스텀 메세지를 출력한다.
  
- 	Defaults badpass_message="wrong password"
+ 	Defaults badpass_message="wrong password__"
   	Defaults authfail_message="authfail"
 
 	3. sudo의 모든 동작(입출력)은 /var/log/sudo에 저장되어야 한다.
@@ -260,8 +260,97 @@ ssh와 sshd의 차이점은 ssh client, ssh server를 의미하며 d는 백그�
 ### 5. Password Policy
 
 
-ing ...
+과제에서는 강력한 보안을 위해 다음과 같은 비밀번호 정책이 적용되기를 요구한다.
 
+	1. 패스워드는 매 30일마다 만료된다.
+
+	2. 패스워드는 변경 이후 2일이 초과되어야 재변경이 가능하다.
+
+	3. 유저는 패스워드 만료 7일 이전에 경고메세지를 받아야 한다.
+
+	4. 패스워드는 대문자, 소문자, 숫자를 포함하고 10글자 이상이어야 한다.
+
+	6. 패스워드는 반복되는 글자가 3글자를 초과할 수 없다.
+
+	7. 패스워드는 유저의 이름을 포함할 수 없다.
+
+	8. 현재 패스워드는 최소 7자 이상 이전 패스워드와 달라야 한다. (root 계정 제외)
+
+	9. (7.)을 제외한 모든 규정은 root 계정에도 적용되어야 한다.
+
+해당 정책을 설정하기 위해 먼저 /etc/login.defs 파일을 수정한다.
+
+
+```
+# /etc/login.defs
+
+PASS_MAX_DAYS 30 // 패스워드의 최대 유효기간
+PASS_MIN_DAYS 2  // 패스워드 재설정 최소 간격
+PASS_WARN_AGE 7  // 패스워드 만료 경고 날짜
+```
+
+데비안은 사용자 인증을 관리하기 위한 기본 인터페이스로 pam 모듈을 채택하고 있다.
+
+그 중, 패스워드 품질 향상을 위해 존재하는 모듈인 pwquality 모듈을 이용해서 설정을 진행하겠다.
+
+
+```
+// pwquality 모듈 설치
+apt install libpam-pwquality
+
+// pwquality.conf 설정 - 모듈 설치 시 기본 설정 파일이 제공된다.
+// /etc/security/pwquality.conf
+
+// passwd expiration
+difork = 7.         // 이전 패스워드와 유사성 비교
+minlen = 10         // 패스워드 최소 길이
+dcredit = -1        // 숫자 포함
+ucredit = -1        // 영대문자 포함
+lcredit = -1        // 영소문자 포함
+maxrepeat = 3       // 반복 최대 횟수
+retry = 3           // 입력 시도 최대 횟수
+enforce_for_root    // 해당 설정 root 계정에도 적용
+```
+
+#### 5-1. 사용자에 관련된 명령어 (과제에서 필요한 옵션에 대해서만)
+
+	1. 사용자 추가
+	adduser [id]
+
+	2. 사용자 제거
+	deluser [id] [option]
+		--remove-home : 해당 계정의 홈 디렉토리 제거
+
+	3. 기존 계정의 패스워드 설정 변경하기
+	passwd [option] [config] [id]
+		-S : 패스워드 설정 조회
+		--mindays : 최소 변경 간격
+		--maxdays : 최대 유효기간
+		--warndays : 경고 날짜
+
+		 ex : passwd --mindays=2 --maxlen=30 --warndays=2 id
+
+	4. 사용자에 그룹 추가
+	usermod [option] [id]
+		 -G : 사용자의 그룹을 지정 그룹으로 덮어쓴다.
+		 -a : 해당 정보를 추가한다(덮어쓰는 게 아닌).
+
+	5. 사용자에 그룹 제거
+	gpasswd [option] [id] [group]
+		 -a : 사용자에 해당 그룹을 추가한다.
+		 -d : 사용자를 해당 그룹에서 제거한다.
+		
+	6. 그룹 제거
+	groupdel [group]
+ 
+
+---
+
+
+### 6.  Monitering.sh 와 cron
+
+
+...ing
 
 
 
