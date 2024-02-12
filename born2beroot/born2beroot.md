@@ -405,12 +405,14 @@ enforce_for_root    // 해당 설정 root 계정에도 적용
 
 5-1. 사용자에 관련된 명령어 (과제에서 필요한 옵션에 대해서만)
 
-	1. 사용자 추가
-	 adduser [id]
+	1. 사용자/그룹 생성
+	adduser [id]
+  	addgroup [id]
 
 	2. 사용자 제거
 	deluser [id] [option]
 		--remove-home : 해당 계정의 홈 디렉토리 제거
+  	delgroup [id]
 
 	3. 기존 계정의 패스워드 설정 변경하기
 	passwd [option] [config] [id]
